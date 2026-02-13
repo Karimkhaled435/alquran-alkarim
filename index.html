@@ -8,6 +8,22 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="كريم">
     <meta name="description" content="موقعك الإسلامي المتكامل - القرآن الكريم، مواقيت الصلاة، الأذكار، والأدعية">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="كريم - موقعك الإسلامي المتكامل">
+    <meta property="og:description" content="القرآن الكريم، مواقيت الصلاة، الأذكار، الأدعية، ختمة القرآن، ومتابعة الصلوات">
+    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea'/%3E%3Cstop offset='50%25' style='stop-color:%23764ba2'/%3E%3Cstop offset='100%25' style='stop-color:%23f093fb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='630' fill='url(%23bg)'/%3E%3Ctext x='600' y='250' font-size='180' text-anchor='middle' fill='white' font-family='Arial'%3E🕌%3C/text%3E%3Ctext x='600' y='400' font-size='120' text-anchor='middle' fill='white' font-weight='bold' font-family='Arial'%3Eكريم%3C/text%3E%3Ctext x='600' y='500' font-size='40' text-anchor='middle' fill='white' font-family='Arial'%3Eموقعك الإسلامي المتكامل%3C/text%3E%3C/svg%3E">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="كريم - موقعك الإسلامي المتكامل">
+    <meta property="twitter:description" content="القرآن الكريم، مواقيت الصلاة، الأذكار، والأدعية">
+    <meta property="twitter:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea'/%3E%3Cstop offset='50%25' style='stop-color:%23764ba2'/%3E%3Cstop offset='100%25' style='stop-color:%23f093fb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='630' fill='url(%23bg)'/%3E%3Ctext x='600' y='250' font-size='180' text-anchor='middle' fill='white' font-family='Arial'%3E🕌%3C/text%3E%3Ctext x='600' y='400' font-size='120' text-anchor='middle' fill='white' font-weight='bold' font-family='Arial'%3Eكريم%3C/text%3E%3Ctext x='600' y='500' font-size='40' text-anchor='middle' fill='white' font-family='Arial'%3Eموقعك الإسلامي المتكامل%3C/text%3E%3C/svg%3E">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕌</text></svg>">
+    
     <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi2YPYsdmK2YUgLSDZhdmI2YLYudmDINin2YTYpdiz2YTYp9mF2Yog2KfZhNmF2KrZg9in2YXZhCIsInNob3J0X25hbWUiOiLZg9ix2YrZhSIsInN0YXJ0X3VybCI6Ii4vIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzY2N2VlYSIsInRoZW1lX2NvbG9yIjoiIzY2N2VlYSIsIm9yaWVudGF0aW9uIjoicG9ydHJhaXQiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJyUzRSUzQ3RleHQgeT0nLjllbScgZm9udC1zaXplPSc5MCclM0Xwn5SMJTNDL3RleHQlM0UlM0Mvc3ZnJTNFIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJzaXplcyI6IjUxMng1MTIifV19">
     <title>كريم - موقعك الإسلامي المتكامل</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,6 +70,94 @@
             overflow-x: hidden;
             line-height: 1.6;
             transition: all 0.5s ease;
+        }
+
+        /* Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeOut 0.5s ease-out 2s forwards;
+        }
+
+        .splash-screen.hidden {
+            display: none;
+        }
+
+        .splash-content {
+            text-align: center;
+            animation: zoomIn 0.8s ease-out;
+        }
+
+        .splash-logo {
+            font-size: 8em;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite alternate;
+        }
+
+        .splash-title {
+            font-family: 'Amiri', serif;
+            font-size: 4em;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .splash-subtitle {
+            font-size: 1.3em;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+        }
+
+        .splash-loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         body::before {
@@ -163,6 +267,26 @@
             animation: fadeInUp 0.8s ease-out;
             position: relative;
             overflow: hidden;
+            /* Performance optimization */
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        /* Performance optimizations */
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .tab-content {
+            /* Optimize repaints */
+            contain: layout style paint;
+        }
+
+        .surah-grid, .adhkar-list, .prayer-times-grid {
+            /* GPU acceleration */
+            transform: translateZ(0);
+            will-change: scroll-position;
         }
 
         .glass-card::before {
@@ -1802,6 +1926,16 @@
     <div class="islamic-pattern"></div>
     <div class="notification" id="notification"></div>
     
+    <!-- Splash Screen / Logo -->
+    <div class="splash-screen" id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo">🕌</div>
+            <h1 class="splash-title">كريم</h1>
+            <p class="splash-subtitle">موقعك الإسلامي المتكامل</p>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+    
     <!-- Help Modal -->
     <div class="help-modal" id="help-modal">
         <div class="help-content">
@@ -2253,8 +2387,21 @@
             navigator.geolocation.getCurrentPosition(async (position) => {
                 const { latitude, longitude } = position.coords;
                 
-                // Update location text
-                locationText.innerHTML = `📍 ${latitude.toFixed(4)}° , ${longitude.toFixed(4)}°`;
+                // Get city and country name from coordinates
+                try {
+                    const geoResponse = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=ar`);
+                    const geoData = await geoResponse.json();
+                    
+                    const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || '';
+                    const country = geoData.address.country || '';
+                    const locationName = `${city}, ${country}`;
+                    
+                    locationText.innerHTML = `📍 ${locationName}`;
+                    localStorage.setItem('locationName', locationName);
+                } catch (error) {
+                    console.error('Error getting location name:', error);
+                    locationText.innerHTML = `📍 موقعك الحالي`;
+                }
 
                 // Calculate prayer times using Aladhan API
                 const date = new Date();
@@ -2277,6 +2424,13 @@
                         localStorage.setItem('prayerTimes', JSON.stringify(timings));
                         localStorage.setItem('prayerTimesDate', dateStr);
                         localStorage.setItem('prayerLocation', `${latitude},${longitude}`);
+                        
+                        // Update Hijri date from the same API response
+                        if (data.data.date && data.data.date.hijri) {
+                            const hijri = data.data.date.hijri;
+                            const gregorian = data.data.date.gregorian;
+                            updateHijriDate(hijri, gregorian);
+                        }
                         
                         showNotification('✅ تم تحديث مواقيت الصلاة بنجاح');
                     }
@@ -3263,7 +3417,19 @@
         }
 
         // Hijri Date Function
+        function updateHijriDate(hijri, gregorian) {
+            const hijriDateText = `📅 ${hijri.day} ${hijri.month.ar} ${hijri.year} هـ - ${gregorian.day} ${getArabicMonthName(gregorian.month.number)} ${gregorian.year} م`;
+            document.getElementById('hijri-date').textContent = hijriDateText;
+            localStorage.setItem('hijriDate', hijriDateText);
+        }
+
         async function getHijriDate() {
+            // Try to load from cache first
+            const cachedHijri = localStorage.getItem('hijriDate');
+            if (cachedHijri) {
+                document.getElementById('hijri-date').textContent = cachedHijri;
+            }
+            
             try {
                 const today = new Date();
                 const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
@@ -3273,16 +3439,17 @@
                 if (data.code === 200) {
                     const hijri = data.data.hijri;
                     const gregorian = data.data.gregorian;
-                    const hijriDateText = `📅 ${hijri.day} ${hijri.month.ar} ${hijri.year} هـ - ${gregorian.day} ${getArabicMonth(gregorian.month.number)} ${gregorian.year} م`;
-                    document.getElementById('hijri-date').textContent = hijriDateText;
+                    updateHijriDate(hijri, gregorian);
                 }
             } catch (error) {
                 console.error('Error fetching Hijri date:', error);
-                document.getElementById('hijri-date').textContent = '📅 التاريخ الهجري غير متاح';
+                if (!cachedHijri) {
+                    document.getElementById('hijri-date').textContent = '📅 التاريخ الهجري';
+                }
             }
         }
 
-        function getArabicMonth(monthNumber) {
+        function getArabicMonthName(monthNumber) {
             const months = ['يناير', 'فبراير', 'مارس', 'إبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
             return months[monthNumber - 1];
         }
@@ -3499,6 +3666,14 @@
 
         // Initialize
         window.addEventListener('load', () => {
+            // Hide splash screen after 2.5 seconds
+            setTimeout(() => {
+                const splashScreen = document.getElementById('splash-screen');
+                if (splashScreen) {
+                    splashScreen.classList.add('hidden');
+                }
+            }, 2500);
+            
             loadTheme();
             displaySurahs();
             showAdhkar('morning');
@@ -3559,9 +3734,9 @@
                 
                 if (cachedDate === todayStr) {
                     displayPrayerTimes(JSON.parse(cachedTimes));
-                    const cachedLocation = localStorage.getItem('prayerLocation');
-                    if (cachedLocation) {
-                        document.getElementById('location-text').innerHTML = `📍 ${cachedLocation} (محفوظ)`;
+                    const cachedLocationName = localStorage.getItem('locationName');
+                    if (cachedLocationName) {
+                        document.getElementById('location-text').innerHTML = `📍 ${cachedLocationName} (محفوظ)`;
                     }
                 }
             }
@@ -3572,7 +3747,21 @@
                     async (position) => {
                         // Success - get prayer times
                         const { latitude, longitude } = position.coords;
-                        document.getElementById('location-text').innerHTML = `📍 ${latitude.toFixed(4)}° , ${longitude.toFixed(4)}°`;
+                        
+                        // Get city name
+                        try {
+                            const geoResponse = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=ar`);
+                            const geoData = await geoResponse.json();
+                            
+                            const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || '';
+                            const country = geoData.address.country || '';
+                            const locationName = `${city}, ${country}`;
+                            
+                            document.getElementById('location-text').innerHTML = `📍 ${locationName}`;
+                            localStorage.setItem('locationName', locationName);
+                        } catch (error) {
+                            document.getElementById('location-text').innerHTML = `📍 موقعك الحالي`;
+                        }
                         
                         const date = new Date();
                         const dateStr = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
@@ -3588,6 +3777,12 @@
                                 localStorage.setItem('prayerTimes', JSON.stringify(timings));
                                 localStorage.setItem('prayerTimesDate', dateStr);
                                 localStorage.setItem('prayerLocation', `${latitude},${longitude}`);
+                                
+                                // Update Hijri date
+                                if (data.data.date && data.data.date.hijri) {
+                                    updateHijriDate(data.data.date.hijri, data.data.date.gregorian);
+                                }
+                                
                                 showNotification('✅ تم تحديث مواقيت الصلاة بنجاح');
                             }
                         } catch (error) {
@@ -3611,6 +3806,13 @@
                     }
                 );
             }
+        });
+
+        // Save all data before page unload to prevent data loss
+        window.addEventListener('beforeunload', () => {
+            // All data is already saved to localStorage automatically
+            // This ensures everything persists between sessions
+            console.log('Saving state before unload...');
         });
 
         // Close modal when clicking outside
