@@ -1515,6 +1515,229 @@
             color: white;
         }
 
+        /* Allah's 99 Names Styles */
+        .names-counter {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.2) 0%, rgba(20, 184, 166, 0.1) 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px solid var(--primary);
+        }
+
+        .names-progress {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .names-count {
+            font-size: 4em;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .names-total {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .names-label {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+        }
+
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .name-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            padding: 20px 15px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .name-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(45, 212, 191, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+
+        .name-card:hover::before {
+            left: 100%;
+        }
+
+        .name-card:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(45, 212, 191, 0.3);
+        }
+
+        .name-card.memorized {
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.3) 0%, rgba(20, 184, 166, 0.2) 100%);
+            border-color: var(--primary);
+        }
+
+        .name-card.memorized::after {
+            content: "✓";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: var(--primary);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+
+        .name-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .name-translation {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Mobile Optimizations */
+        .container {
+            padding: 15px;
+        }
+
+        .nav-tabs {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 10px;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        /* Touch-friendly sizes */
+        @media (max-width: 768px) {
+            .tab-btn {
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+
+            .glass-card {
+                padding: 20px 15px;
+            }
+
+            .names-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+            }
+
+            .name-card {
+                padding: 15px 10px;
+            }
+
+            .name-arabic {
+                font-size: 1.3em;
+            }
+
+            /* Larger touch targets */
+            .tracker-checkbox .checkmark {
+                width: 40px;
+                height: 40px;
+            }
+
+            .dhikr-count-btn {
+                padding: 18px;
+                font-size: 1.2em;
+            }
+
+            .khatmah-surah-card {
+                padding: 12px;
+            }
+
+            /* Better spacing for mobile */
+            .header {
+                margin-bottom: 25px;
+            }
+
+            .logo {
+                font-size: 2.2em;
+            }
+
+            .tagline {
+                font-size: 0.95em;
+            }
+
+            .hijri-date {
+                font-size: 0.8em;
+                padding: 8px 15px;
+            }
+
+            /* Scrollable tabs indicator */
+            .nav-tabs::after {
+                content: '→';
+                position: sticky;
+                right: 0;
+                background: linear-gradient(to right, transparent, var(--bg-gradient));
+                padding: 0 15px;
+                pointer-events: none;
+            }
+        }
+
+        /* Swipe gestures hint */
+        .swipe-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.85em;
+            z-index: 1000;
+            animation: fadeOut 3s ease-out 2s forwards;
+            pointer-events: none;
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from {
@@ -1639,6 +1862,60 @@
                 font-size: 0.85em;
                 padding: 8px 18px;
             }
+
+            .taqwa-meter {
+                margin-bottom: 20px;
+            }
+
+            .taqwa-score {
+                font-size: 1.2em;
+            }
+        }
+
+        /* Taqwa Meter Styles */
+        .taqwa-meter {
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.15) 0%, rgba(20, 184, 166, 0.1) 100%);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(45, 212, 191, 0.3);
+        }
+
+        .taqwa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .taqwa-score {
+            font-size: 1.5em;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .taqwa-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .taqwa-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, var(--primary) 50%, #3b82f6 100%);
+            border-radius: 50px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 15px rgba(45, 212, 191, 0.6);
+        }
+
+        .taqwa-tips {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
         }
 
         .islamic-pattern {
@@ -2089,19 +2366,32 @@
         </header>
 
         <nav class="nav-tabs">
-            <button class="tab-btn active" data-tab="prayer"><span>⏰ مواقيت الصلاة</span></button>
-            <button class="tab-btn" data-tab="tracker"><span>📊 متابعة الصلوات</span></button>
-            <button class="tab-btn" data-tab="quran"><span>📖 القرآن الكريم</span></button>
-            <button class="tab-btn" data-tab="khatmah"><span>📗 ختمة القرآن</span></button>
-            <button class="tab-btn" data-tab="duaa"><span>🤲 الأدعية</span></button>
-            <button class="tab-btn" data-tab="adhkar"><span>💎 الأذكار</span></button>
-            <button class="tab-btn" data-tab="qibla"><span>🧭 القبلة</span></button>
-            <button class="tab-btn" data-tab="tasbih"><span>📿 المسبحة</span></button>
+            <button class="tab-btn active" data-tab="prayer"><span>⏰ الصلاة</span></button>
+            <button class="tab-btn" data-tab="tracker"><span>📊 متابعة</span></button>
+            <button class="tab-btn" data-tab="quran"><span>📖 القرآن</span></button>
+            <button class="tab-btn" data-tab="khatmah"><span>📗 ختمة</span></button>
+            <button class="tab-btn" data-tab="names"><span>✨ الأسماء</span></button>
+            <button class="tab-btn" data-tab="duaa"><span>🤲 أدعية</span></button>
+            <button class="tab-btn" data-tab="adhkar"><span>💎 أذكار</span></button>
+            <button class="tab-btn" data-tab="qibla"><span>🧭 قبلة</span></button>
+            <button class="tab-btn" data-tab="tasbih"><span>📿 تسبيح</span></button>
         </nav>
 
         <!-- Prayer Times Tab -->
         <div class="tab-content active" id="prayer">
             <div class="glass-card">
+                <!-- Daily Taqwa Meter -->
+                <div class="taqwa-meter">
+                    <div class="taqwa-header">
+                        <span>⭐ مقياس التقوى اليومي</span>
+                        <span class="taqwa-score" id="taqwa-score">0%</span>
+                    </div>
+                    <div class="taqwa-bar">
+                        <div class="taqwa-fill" id="taqwa-fill"></div>
+                    </div>
+                    <div class="taqwa-tips" id="taqwa-tips">ابدأ يومك بالصلاة في وقتها!</div>
+                </div>
+
                 <div class="location-info">
                     <span id="location-text">📍 جاري تحديد موقعك...</span>
                     <button class="btn-get-location" onclick="getPrayerTimes()">تحديث الموقع</button>
@@ -2244,6 +2534,25 @@
 
                 <div class="khatmah-surahs-grid" id="khatmah-grid">
                     <!-- Khatmah surahs will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Allah's 99 Names Tab -->
+        <div class="tab-content" id="names">
+            <div class="glass-card">
+                <h2 style="text-align: center; margin-bottom: 30px; font-family: 'Amiri', serif; font-size: 2em;">✨ أسماء الله الحسنى</h2>
+                
+                <div class="names-counter">
+                    <div class="names-progress">
+                        <div class="names-count" id="names-memorized">0</div>
+                        <div class="names-total">/ 99</div>
+                    </div>
+                    <div class="names-label">اسماً حفظته</div>
+                </div>
+
+                <div class="names-grid" id="names-grid">
+                    <!-- Names will be inserted here -->
                 </div>
             </div>
         </div>
@@ -2533,13 +2842,81 @@
             // Sync tracker times
             syncTrackerTimes(timings);
 
-            // Set notification for next prayer
+            // Set notification for next prayer (at prayer time)
             if (nextPrayer && minDiff > 0) {
                 setTimeout(() => {
                     playAdhan();
                     showNotification(`🕌 حان الآن موعد صلاة ${prayerNames[nextPrayer]}`);
                 }, minDiff);
+                
+                // Set reminder 10 minutes before prayer
+                const reminderTime = minDiff - (10 * 60 * 1000); // 10 minutes before
+                if (reminderTime > 0) {
+                    setTimeout(() => {
+                        showNotification(`⏰ تبقى 10 دقائق على صلاة ${prayerNames[nextPrayer]}`);
+                        if (navigator.vibrate) {
+                            navigator.vibrate([200, 100, 200]);
+                        }
+                    }, reminderTime);
+                }
             }
+            
+            // Update Taqwa meter
+            updateTaqwaMeter();
+        }
+
+        // Taqwa Meter Calculation
+        function updateTaqwaMeter() {
+            const today = new Date().toDateString();
+            const trackerData = JSON.parse(localStorage.getItem('prayerTracker') || '{}');
+            const todayData = trackerData[today] || {};
+            const khatmahData = JSON.parse(localStorage.getItem('khatmahProgress') || '{}');
+            const memorizedNames = JSON.parse(localStorage.getItem('memorizedNames') || '{}');
+            
+            let score = 0;
+            let tips = [];
+            
+            // Prayers (50 points max)
+            const prayersCount = Object.values(todayData).filter(v => v).length;
+            score += prayersCount * 10;
+            if (prayersCount < 5) {
+                tips.push(`صليت ${prayersCount} من 5 صلوات`);
+            } else {
+                tips.push('ماشاء الله! أكملت جميع الصلوات');
+            }
+            
+            // Quran (30 points max)
+            const quranProgress = Object.keys(khatmahData).length;
+            const quranScore = Math.min(30, Math.floor(quranProgress / 114 * 30));
+            score += quranScore;
+            if (quranProgress > 0) {
+                tips.push(`قرأت ${quranProgress} سورة`);
+            }
+            
+            // Allah's Names (20 points max)
+            const namesCount = Object.keys(memorizedNames).length;
+            const namesScore = Math.min(20, Math.floor(namesCount / 99 * 20));
+            score += namesScore;
+            if (namesCount > 0) {
+                tips.push(`حفظت ${namesCount} اسماً من أسماء الله`);
+            }
+            
+            // Update UI
+            document.getElementById('taqwa-score').textContent = score + '%';
+            document.getElementById('taqwa-fill').style.width = score + '%';
+            
+            let taqwaTip = tips.join(' • ');
+            if (score === 100) {
+                taqwaTip = '🎉 ماشاء الله! يوم مثالي - بارك الله فيك!';
+            } else if (score >= 80) {
+                taqwaTip = '⭐ ممتاز! ' + taqwaTip;
+            } else if (score >= 50) {
+                taqwaTip = '👍 جيد! ' + taqwaTip;
+            } else {
+                taqwaTip = '💪 استمر! ' + taqwaTip;
+            }
+            
+            document.getElementById('taqwa-tips').textContent = taqwaTip;
         }
 
         function formatTimeRemaining(ms) {
@@ -3214,6 +3591,7 @@
             localStorage.setItem('khatmahProgress', JSON.stringify(khatmahData));
             updateKhatmahStats(khatmahData);
             displayKhatmahSurahs(khatmahData);
+            updateTaqwaMeter(); // Update Taqwa meter
         }
 
         function updateKhatmahStats(khatmahData) {
@@ -3410,6 +3788,190 @@
             }
         }
 
+        // Allah's 99 Names
+        const allahNames = [
+            {arabic: 'الرَّحْمَن', translation: 'الرحمن - الرحيم'},
+            {arabic: 'الرَّحِيم', translation: 'واسع الرحمة'},
+            {arabic: 'الْمَلِك', translation: 'المالك لكل شيء'},
+            {arabic: 'الْقُدُّوس', translation: 'المنزه عن العيوب'},
+            {arabic: 'السَّلاَم', translation: 'السالم من النقائص'},
+            {arabic: 'الْمُؤْمِن', translation: 'المصدق لرسله'},
+            {arabic: 'الْمُهَيْمِن', translation: 'الرقيب الحافظ'},
+            {arabic: 'الْعَزِيز', translation: 'القوي الغالب'},
+            {arabic: 'الْجَبَّار', translation: 'القاهر العظيم'},
+            {arabic: 'الْمُتَكَبِّر', translation: 'المتعالي عن الخلق'},
+            {arabic: 'الْخَالِق', translation: 'المبدع المصور'},
+            {arabic: 'الْبَارِئ', translation: 'الموجد من العدم'},
+            {arabic: 'الْمُصَوِّر', translation: 'المشكل على صور'},
+            {arabic: 'الْغَفَّار', translation: 'كثير المغفرة'},
+            {arabic: 'الْقَهَّار', translation: 'الغالب القاهر'},
+            {arabic: 'الْوَهَّاب', translation: 'كثير العطاء'},
+            {arabic: 'الرَّزَّاق', translation: 'خالق الأرزاق'},
+            {arabic: 'الْفَتَّاح', translation: 'الحاكم بالحق'},
+            {arabic: 'الْعَلِيم', translation: 'العالم بكل شيء'},
+            {arabic: 'الْقَابِض', translation: 'الممسك الرازق'},
+            {arabic: 'الْبَاسِط', translation: 'الموسع العطاء'},
+            {arabic: 'الْخَافِض', translation: 'المذل القاهر'},
+            {arabic: 'الرَّافِع', translation: 'رافع المؤمنين'},
+            {arabic: 'الْمُعِز', translation: 'معطي العز'},
+            {arabic: 'المُذِل', translation: 'خافض الجبارين'},
+            {arabic: 'السَّمِيع', translation: 'السامع لكل شيء'},
+            {arabic: 'الْبَصِير', translation: 'الرائي لكل شيء'},
+            {arabic: 'الْحَكَم', translation: 'القاضي الحاكم'},
+            {arabic: 'الْعَدْل', translation: 'المنصف الحكيم'},
+            {arabic: 'اللَّطِيف', translation: 'الرفيق بعباده'},
+            {arabic: 'الْخَبِير', translation: 'العالم بالسرائر'},
+            {arabic: 'الْحَلِيم', translation: 'الصبور العفو'},
+            {arabic: 'الْعَظِيم', translation: 'الكبير الشأن'},
+            {arabic: 'الْغَفُور', translation: 'الساتر للذنوب'},
+            {arabic: 'الشَّكُور', translation: 'المثيب الحامد'},
+            {arabic: 'الْعَلِي', translation: 'الرفيع القدر'},
+            {arabic: 'الْكَبِير', translation: 'العظيم الجليل'},
+            {arabic: 'الْحَفِيظ', translation: 'الحافظ لخلقه'},
+            {arabic: 'المُقيت', translation: 'خالق الأقوات'},
+            {arabic: 'الْحسِيب', translation: 'الكافي المحاسب'},
+            {arabic: 'الْجَلِيل', translation: 'العظيم المهيب'},
+            {arabic: 'الْكَرِيم', translation: 'كثير الخير'},
+            {arabic: 'الرَّقِيب', translation: 'المراقب الحافظ'},
+            {arabic: 'الْمُجِيب', translation: 'مجيب الدعاء'},
+            {arabic: 'الْوَاسِع', translation: 'واسع الرحمة'},
+            {arabic: 'الْحَكِيم', translation: 'المحكم العليم'},
+            {arabic: 'الْوَدُود', translation: 'المحب المحبوب'},
+            {arabic: 'الْمَجِيد', translation: 'العظيم الكريم'},
+            {arabic: 'الْبَاعِث', translation: 'الباعث للخلق'},
+            {arabic: 'الشَّهِيد', translation: 'الشاهد المطلع'},
+            {arabic: 'الْحَق', translation: 'الثابت الموجود'},
+            {arabic: 'الْوَكِيل', translation: 'الكفيل الحافظ'},
+            {arabic: 'الْقَوِي', translation: 'الشديد القادر'},
+            {arabic: 'الْمَتِين', translation: 'القوي الثابت'},
+            {arabic: 'الْوَلِي', translation: 'الناصر المعين'},
+            {arabic: 'الْحَمِيد', translation: 'المحمود الممجد'},
+            {arabic: 'الْمُحْصِي', translation: 'المحيط علماً'},
+            {arabic: 'الْمُبْدِئ', translation: 'البادئ الخالق'},
+            {arabic: 'الْمُعِيد', translation: 'المعيد للخلق'},
+            {arabic: 'الْمُحْيِي', translation: 'خالق الحياة'},
+            {arabic: 'اَلْمُمِيت', translation: 'خالق الموت'},
+            {arabic: 'الْحَي', translation: 'الحي الدائم'},
+            {arabic: 'الْقَيُّوم', translation: 'القائم بنفسه'},
+            {arabic: 'الْوَاجِد', translation: 'الغني الواجد'},
+            {arabic: 'الْمَاجِد', translation: 'المجيد الكريم'},
+            {arabic: 'الْواحِد', translation: 'الأحد الفرد'},
+            {arabic: 'اَلاَحَد', translation: 'الواحد الأحد'},
+            {arabic: 'الصَّمَد', translation: 'السيد المقصود'},
+            {arabic: 'الْقَادِر', translation: 'القوي المقتدر'},
+            {arabic: 'الْمُقْتَدِر', translation: 'التام القدرة'},
+            {arabic: 'الْمُقَدِّم', translation: 'المعلي المعزز'},
+            {arabic: 'الْمُؤَخِّر', translation: 'المذل الخافض'},
+            {arabic: 'الأوَّل', translation: 'الأول قبل كل شيء'},
+            {arabic: 'الآخِر', translation: 'الباقي بعد الخلق'},
+            {arabic: 'الظَّاهِر', translation: 'الظاهر الواضح'},
+            {arabic: 'الْبَاطِن', translation: 'العالم بالخفايا'},
+            {arabic: 'الْوَالِي', translation: 'المالك المتصرف'},
+            {arabic: 'الْمُتَعَالِي', translation: 'المتعالي المتنزه'},
+            {arabic: 'الْبَر', translation: 'المحسن الجواد'},
+            {arabic: 'التَّوَاب', translation: 'قابل التوبة'},
+            {arabic: 'الْمُنْتَقِم', translation: 'المعاقب للعصاة'},
+            {arabic: 'العَفُو', translation: 'الصفوح الغفور'},
+            {arabic: 'الرَّؤُوف', translation: 'الرحيم اللطيف'},
+            {arabic: 'مَالِكُ الْمُلْك', translation: 'مالك الملك كله'},
+            {arabic: 'ذُوالْجَلاَلِ وَالإكْرَام', translation: 'صاحب الجلال'},
+            {arabic: 'الْمُقْسِط', translation: 'العادل المنصف'},
+            {arabic: 'الْجَامِع', translation: 'الجامع للخلق'},
+            {arabic: 'الْغَنِي', translation: 'الغني المستغني'},
+            {arabic: 'الْمُغْنِي', translation: 'المعطي الرزاق'},
+            {arabic: 'اَلْمَانِعُ', translation: 'المانع الحافظ'},
+            {arabic: 'الضَّار', translation: 'الخافض المذل'},
+            {arabic: 'النَّافِع', translation: 'الرافع النافع'},
+            {arabic: 'النُّور', translation: 'الهادي المرشد'},
+            {arabic: 'الْهَادِي', translation: 'الدال الموفق'},
+            {arabic: 'الْبَدِيعُ', translation: 'المبدع الخالق'},
+            {arabic: 'اَلْبَاقِي', translation: 'الدائم الباقي'},
+            {arabic: 'الْوَارِث', translation: 'الباقي الوارث'},
+            {arabic: 'الرَّشِيد', translation: 'المرشد الهادي'},
+            {arabic: 'الصَّبُور', translation: 'الحليم المتأني'}
+        ];
+
+        function displayAllahNames() {
+            const grid = document.getElementById('names-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            const memorizedNames = JSON.parse(localStorage.getItem('memorizedNames') || '{}');
+            
+            allahNames.forEach((name, index) => {
+                const card = document.createElement('div');
+                card.className = 'name-card';
+                if (memorizedNames[index]) {
+                    card.classList.add('memorized');
+                }
+                
+                card.onclick = () => toggleNameMemorization(index);
+                
+                card.innerHTML = `
+                    <div class="name-arabic">${name.arabic}</div>
+                    <div class="name-translation">${name.translation}</div>
+                `;
+                
+                grid.appendChild(card);
+            });
+            
+            updateNamesCount();
+        }
+
+        function toggleNameMemorization(index) {
+            let memorizedNames = JSON.parse(localStorage.getItem('memorizedNames') || '{}');
+            
+            if (memorizedNames[index]) {
+                delete memorizedNames[index];
+            } else {
+                memorizedNames[index] = true;
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+            }
+            
+            // CRITICAL: Save immediately with double verification
+            localStorage.setItem('memorizedNames', JSON.stringify(memorizedNames));
+            setTimeout(() => {
+                localStorage.setItem('memorizedNames', JSON.stringify(memorizedNames));
+            }, 100);
+            
+            displayAllahNames();
+            updateTaqwaMeter(); // Update Taqwa meter
+        }
+
+        function updateNamesCount() {
+            const memorizedNames = JSON.parse(localStorage.getItem('memorizedNames') || '{}');
+            const count = Object.keys(memorizedNames).length;
+            document.getElementById('names-memorized').textContent = count;
+        }
+
+        // Auto-save all changes
+        function autoSave() {
+            // Save current tab
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (activeTab) {
+                localStorage.setItem('lastActiveTab', activeTab.dataset.tab);
+            }
+        }
+
+        // Auto-save every 2 seconds
+        setInterval(autoSave, 2000);
+
+        // Restore last tab on load
+        function restoreLastTab() {
+            const lastTab = localStorage.getItem('lastActiveTab');
+            if (lastTab) {
+                const tabBtn = document.querySelector(`[data-tab="${lastTab}"]`);
+                if (tabBtn) {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tabBtn.classList.add('active');
+                    document.getElementById(lastTab).classList.add('active');
+                }
+            }
+        }
+
         // Welcome Modal Functions - REMOVED, direct browser request instead
         function requestLocationPermission() {
             // This will trigger the browser's native location permission prompt
@@ -3464,7 +4026,14 @@
             }
             
             trackerData[today][prayer] = checked;
+            
+            // CRITICAL: Save immediately
             localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
+            
+            // Force save verification
+            setTimeout(() => {
+                localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
+            }, 100);
             
             // Update card style
             const card = document.querySelector(`.tracker-prayer-card[data-prayer="${prayer}"]`);
@@ -3480,6 +4049,7 @@
             }
             
             updateTrackerStats();
+            updateTaqwaMeter(); // Update Taqwa meter
         }
 
         function getPrayerNameArabic(prayer) {
@@ -3676,11 +4246,23 @@
             
             loadTheme();
             displaySurahs();
+            displayAllahNames();
             showAdhkar('morning');
             showDuaaCategory('daily');
             getHijriDate();
             loadTrackerData();
             loadKhatmahProgress();
+            restoreLastTab();
+            
+            // Show swipe hint on mobile
+            if (window.innerWidth < 768) {
+                setTimeout(() => {
+                    const hint = document.createElement('div');
+                    hint.className = 'swipe-hint';
+                    hint.textContent = '← مرر لرؤية المزيد من التبويبات';
+                    document.body.appendChild(hint);
+                }, 3000);
+            }
             
             // Register Service Worker for PWA
             if ('serviceWorker' in navigator) {
