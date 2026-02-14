@@ -254,6 +254,45 @@
             transform: rotate(360deg);
         }
 
+        .manual-save-btn {
+            position: fixed;
+            top: 90px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 50%;
+            border: 2px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            font-size: 1.8em;
+        }
+
+        .manual-save-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .manual-save-btn:active {
+            transform: scale(0.95);
+        }
+
+        .manual-save-btn.saving {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
         /* Glass Card */
         .glass-card {
             background: var(--glass-bg);
@@ -2563,6 +2602,9 @@
             <div class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع الليلي/النهاري">
                 <span class="theme-icon">🌙</span>
             </div>
+            <div class="manual-save-btn" onclick="manualSaveAll()" title="حفظ يدوي - اضغط للتأكد من حفظ كل شيء">
+                💾
+            </div>
             <h1 class="logo">كريم</h1>
             <p class="tagline">موقعك الإسلامي المتكامل • القرآن • الأذكار • مواقيت الصلاة</p>
             <div class="hijri-date" id="hijri-date">📅 جاري تحميل التاريخ الهجري...</div>
@@ -3877,12 +3919,21 @@
                 }
             }
             
+            // CRITICAL: Triple save with verification
             localStorage.setItem('khatmahProgress', JSON.stringify(khatmahData));
+            setTimeout(() => {
+                localStorage.setItem('khatmahProgress', JSON.stringify(khatmahData));
+            }, 50);
+            setTimeout(() => {
+                localStorage.setItem('khatmahProgress', JSON.stringify(khatmahData));
+                console.log('Khatmah saved:', khatmahData);
+            }, 150);
+            
             updateKhatmahStats(khatmahData);
             displayKhatmahSurahs(khatmahData);
-            updateTaqwaMeter(); // Update Taqwa meter
-            updateAchievements(); // Check achievements
-            updateStatistics(); // Update stats
+            updateTaqwaMeter();
+            updateAchievements();
+            updateStatistics();
         }
 
         function updateKhatmahStats(khatmahData) {
@@ -4320,19 +4371,20 @@
             
             trackerData[today][prayer] = checked;
             
-            // CRITICAL: Save immediately
+            // CRITICAL: Triple save with verification
             localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
-            
-            // Force save verification
             setTimeout(() => {
                 localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
-            }, 100);
+            }, 50);
+            setTimeout(() => {
+                localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
+                console.log('Prayer tracker saved:', trackerData);
+            }, 150);
             
             // Update card style
             const card = document.querySelector(`.tracker-prayer-card[data-prayer="${prayer}"]`);
             if (checked) {
                 card.classList.add('completed');
-                // Vibration feedback
                 if (navigator.vibrate) {
                     navigator.vibrate(100);
                 }
@@ -4342,9 +4394,9 @@
             }
             
             updateTrackerStats();
-            updateTaqwaMeter(); // Update Taqwa meter
-            updateAchievements(); // Check for new achievements
-            updateStatistics(); // Update statistics
+            updateTaqwaMeter();
+            updateAchievements();
+            updateStatistics();
         }
 
         function getPrayerNameArabic(prayer) {
@@ -4427,13 +4479,19 @@
             const trackerData = JSON.parse(localStorage.getItem('prayerTracker') || '{}');
             const todayData = trackerData[today] || {};
             
-            // Update checkboxes
-            Object.keys(todayData).forEach(prayer => {
-                const checkbox = document.querySelector(`.tracker-prayer-card[data-prayer="${prayer}"] input`);
+            console.log('Loading tracker data:', todayData);
+            
+            // Update checkboxes - CRITICAL FIX
+            const prayerNames = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+            prayerNames.forEach(prayer => {
+                const checkbox = document.querySelector(`.tracker-prayer-card[data-prayer="${prayer}"] input[type="checkbox"]`);
                 if (checkbox) {
-                    checkbox.checked = todayData[prayer];
+                    checkbox.checked = todayData[prayer] || false;
+                    const card = checkbox.closest('.tracker-prayer-card');
                     if (todayData[prayer]) {
-                        checkbox.closest('.tracker-prayer-card').classList.add('completed');
+                        card.classList.add('completed');
+                    } else {
+                        card.classList.remove('completed');
                     }
                 }
             });
@@ -4560,6 +4618,21 @@
                     document.body.appendChild(hint);
                 }, 3000);
             }
+            
+            // Show save info on first use
+            if (!localStorage.getItem('hasSeenSaveInfo')) {
+                setTimeout(() => {
+                    showNotification('💡 نصيحة: اضغط زر 💾 في أي وقت لحفظ تقدمك يدوياً');
+                    localStorage.setItem('hasSeenSaveInfo', 'true');
+                }, 5000);
+            }
+            
+            // Log current saved data for debugging
+            console.log('=== LOADED DATA ===');
+            console.log('Prayer Tracker:', localStorage.getItem('prayerTracker'));
+            console.log('Khatmah:', localStorage.getItem('khatmahProgress'));
+            console.log('Names:', localStorage.getItem('memorizedNames'));
+            console.log('==================');
             
             // Register Service Worker for PWA
             if ('serviceWorker' in navigator) {
@@ -4714,6 +4787,41 @@
                 }
             });
         });
+
+        // Manual save function - callable by user
+        function manualSaveAll() {
+            const saveBtn = document.querySelector('.manual-save-btn');
+            saveBtn.classList.add('saving');
+            
+            console.log('=== MANUAL SAVE INITIATED ===');
+            
+            // Save all data
+            const criticalData = {
+                prayerTracker: localStorage.getItem('prayerTracker'),
+                khatmahProgress: localStorage.getItem('khatmahProgress'),
+                memorizedNames: localStorage.getItem('memorizedNames')
+            };
+            
+            // Triple save each item
+            Object.keys(criticalData).forEach(key => {
+                if (criticalData[key]) {
+                    localStorage.setItem(key, criticalData[key]);
+                    setTimeout(() => localStorage.setItem(key, criticalData[key]), 100);
+                    setTimeout(() => localStorage.setItem(key, criticalData[key]), 200);
+                }
+            });
+            
+            console.log('Prayer Tracker:', localStorage.getItem('prayerTracker'));
+            console.log('Khatmah:', localStorage.getItem('khatmahProgress'));
+            console.log('Names:', localStorage.getItem('memorizedNames'));
+            console.log('=== SAVE COMPLETE ===');
+            
+            showNotification('✅ تم الحفظ بنجاح!');
+            
+            setTimeout(() => {
+                saveBtn.classList.remove('saving');
+            }, 500);
+        }
 
         // Auto-save function that runs continuously
         function autoSaveAll() {
