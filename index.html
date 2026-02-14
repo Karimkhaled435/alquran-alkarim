@@ -2679,7 +2679,7 @@
                             <div class="tracker-prayer-time" id="tracker-fajr-time">--:--</div>
                         </div>
                         <label class="tracker-checkbox">
-                            <input type="checkbox" onchange="updatePrayerTracker('fajr', this.checked)">
+                            <input type="checkbox" id="check-fajr">
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -2690,7 +2690,7 @@
                             <div class="tracker-prayer-time" id="tracker-dhuhr-time">--:--</div>
                         </div>
                         <label class="tracker-checkbox">
-                            <input type="checkbox" onchange="updatePrayerTracker('dhuhr', this.checked)">
+                            <input type="checkbox" id="check-dhuhr">
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -2701,7 +2701,7 @@
                             <div class="tracker-prayer-time" id="tracker-asr-time">--:--</div>
                         </div>
                         <label class="tracker-checkbox">
-                            <input type="checkbox" onchange="updatePrayerTracker('asr', this.checked)">
+                            <input type="checkbox" id="check-asr">
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -2712,7 +2712,7 @@
                             <div class="tracker-prayer-time" id="tracker-maghrib-time">--:--</div>
                         </div>
                         <label class="tracker-checkbox">
-                            <input type="checkbox" onchange="updatePrayerTracker('maghrib', this.checked)">
+                            <input type="checkbox" id="check-maghrib">
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -2723,7 +2723,7 @@
                             <div class="tracker-prayer-time" id="tracker-isha-time">--:--</div>
                         </div>
                         <label class="tracker-checkbox">
-                            <input type="checkbox" onchange="updatePrayerTracker('isha', this.checked)">
+                            <input type="checkbox" id="check-isha">
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -3890,19 +3890,58 @@
             surahs.forEach(surah => {
                 const card = document.createElement('div');
                 card.className = 'khatmah-surah-card';
+                card.dataset.surahNumber = surah.number;
+                
                 if (khatmahData[surah.number]) {
                     card.classList.add('completed');
                 }
-                
-                card.onclick = () => toggleKhatmahSurah(surah.number);
                 
                 card.innerHTML = `
                     <div class="khatmah-surah-name">${surah.name}</div>
                     <div class="khatmah-surah-info">${surah.verses} آية</div>
                 `;
                 
+                // Add click listener directly
+                card.addEventListener('click', function() {
+                    toggleKhatmahSurahNew(surah.number);
+                });
+                
                 grid.appendChild(card);
             });
+        }
+
+        function toggleKhatmahSurahNew(surahNumber) {
+            let khatmahData = JSON.parse(localStorage.getItem('khatmahProgress') || '{}');
+            
+            const wasCompleted = khatmahData[surahNumber];
+            
+            if (wasCompleted) {
+                delete khatmahData[surahNumber];
+            } else {
+                khatmahData[surahNumber] = true;
+                if (navigator.vibrate) navigator.vibrate(50);
+            }
+            
+            // Save immediately
+            localStorage.setItem('khatmahProgress', JSON.stringify(khatmahData));
+            console.log('💾 Khatmah saved:', surahNumber, '=', !wasCompleted);
+            
+            // Update UI
+            const card = document.querySelector(`.khatmah-surah-card[data-surah-number="${surahNumber}"]`);
+            if (card) {
+                if (!wasCompleted) {
+                    card.classList.add('completed');
+                } else {
+                    card.classList.remove('completed');
+                }
+            }
+            
+            updateKhatmahStats(khatmahData);
+            if (typeof updateTaqwaMeter === 'function') updateTaqwaMeter();
+            if (typeof updateAchievements === 'function') updateAchievements();
+            if (typeof updateStatistics === 'function') updateStatistics();
+            
+            showNotification(!wasCompleted ? '✅ تم إكمال السورة!' : 'تم الإلغاء');
         }
 
         function toggleKhatmahSurah(surahNumber) {
@@ -4361,7 +4400,24 @@
         }
 
         // Prayer Tracker Functions
-        function updatePrayerTracker(prayer, checked) {
+        // Prayer Tracker Functions - FIXED VERSION
+        function setupPrayerTrackerEvents() {
+            console.log('🔧 Setting up prayer tracker events...');
+            const prayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+            
+            prayers.forEach(prayer => {
+                const checkbox = document.getElementById(`check-${prayer}`);
+                if (checkbox) {
+                    checkbox.addEventListener('change', function(e) {
+                        console.log(`📝 ${prayer} changed to:`, this.checked);
+                        savePrayerImmediately(prayer, this.checked);
+                    });
+                    console.log(`✅ Event attached to ${prayer}`);
+                }
+            });
+        }
+
+        function savePrayerImmediately(prayer, checked) {
             const today = new Date().toDateString();
             let trackerData = JSON.parse(localStorage.getItem('prayerTracker') || '{}');
             
@@ -4371,32 +4427,60 @@
             
             trackerData[today][prayer] = checked;
             
-            // CRITICAL: Triple save with verification
+            // Save NOW
             localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
-            setTimeout(() => {
-                localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
-            }, 50);
-            setTimeout(() => {
-                localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
-                console.log('Prayer tracker saved:', trackerData);
-            }, 150);
+            console.log('💾 SAVED:', prayer, '=', checked);
+            console.log('📦 Full data:', trackerData);
             
-            // Update card style
+            // Update UI
             const card = document.querySelector(`.tracker-prayer-card[data-prayer="${prayer}"]`);
-            if (checked) {
-                card.classList.add('completed');
-                if (navigator.vibrate) {
-                    navigator.vibrate(100);
+            if (card) {
+                if (checked) {
+                    card.classList.add('completed');
+                    if (navigator.vibrate) navigator.vibrate(50);
+                } else {
+                    card.classList.remove('completed');
                 }
-                showNotification(`✅ تم تسجيل صلاة ${getPrayerNameArabic(prayer)}`);
-            } else {
-                card.classList.remove('completed');
             }
             
             updateTrackerStats();
-            updateTaqwaMeter();
-            updateAchievements();
-            updateStatistics();
+            if (typeof updateTaqwaMeter === 'function') updateTaqwaMeter();
+            if (typeof updateAchievements === 'function') updateAchievements();
+            if (typeof updateStatistics === 'function') updateStatistics();
+        }
+
+        function loadTrackerData() {
+            console.log('📖 Loading tracker data...');
+            const today = new Date().toDateString();
+            const saved = localStorage.getItem('prayerTracker');
+            
+            if (!saved) {
+                console.log('⚠️ No saved data');
+                updateTrackerStats();
+                return;
+            }
+            
+            const trackerData = JSON.parse(saved);
+            const todayData = trackerData[today] || {};
+            console.log('📅 Today:', today);
+            console.log('📦 Data:', todayData);
+            
+            const prayers = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+            prayers.forEach(prayer => {
+                const checkbox = document.getElementById(`check-${prayer}`);
+                const card = document.querySelector(`.tracker-prayer-card[data-prayer="${prayer}"]`);
+                
+                if (checkbox && todayData[prayer] === true) {
+                    checkbox.checked = true;
+                    if (card) card.classList.add('completed');
+                    console.log(`✅ Restored: ${prayer} = checked`);
+                } else if (checkbox) {
+                    checkbox.checked = false;
+                    if (card) card.classList.remove('completed');
+                }
+            });
+            
+            updateTrackerStats();
         }
 
         function getPrayerNameArabic(prayer) {
@@ -4472,31 +4556,6 @@
                 
                 weekGrid.appendChild(dayCard);
             }
-        }
-
-        function loadTrackerData() {
-            const today = new Date().toDateString();
-            const trackerData = JSON.parse(localStorage.getItem('prayerTracker') || '{}');
-            const todayData = trackerData[today] || {};
-            
-            console.log('Loading tracker data:', todayData);
-            
-            // Update checkboxes - CRITICAL FIX
-            const prayerNames = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
-            prayerNames.forEach(prayer => {
-                const checkbox = document.querySelector(`.tracker-prayer-card[data-prayer="${prayer}"] input[type="checkbox"]`);
-                if (checkbox) {
-                    checkbox.checked = todayData[prayer] || false;
-                    const card = checkbox.closest('.tracker-prayer-card');
-                    if (todayData[prayer]) {
-                        card.classList.add('completed');
-                    } else {
-                        card.classList.remove('completed');
-                    }
-                }
-            });
-            
-            updateTrackerStats();
         }
 
         function syncTrackerTimes(timings) {
@@ -4604,6 +4663,7 @@
             showDuaaCategory('daily');
             getHijriDate();
             loadTrackerData();
+            setupPrayerTrackerEvents(); // CRITICAL: Setup event listeners
             loadKhatmahProgress();
             restoreLastTab();
             updateAchievements();
