@@ -71,6 +71,28 @@
             overflow-x: hidden;
             line-height: 1.6;
             transition: all 0.5s ease;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Performance optimizations */
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            box-sizing: border-box;
+        }
+
+        /* Faster animations on mobile */
+        @media (max-width: 768px) {
+            * {
+                animation-duration: 0.3s !important;
+                transition-duration: 0.15s !important;
+            }
+            
+            body {
+                background-attachment: scroll;
+            }
         }
 
         /* Splash Screen */
@@ -1242,16 +1264,22 @@
         .week-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
+            gap: 8px;
+            direction: rtl;
         }
 
         .day-card {
             background: rgba(255,255,255,0.08);
-            padding: 15px 10px;
+            padding: 12px 8px;
             border-radius: 12px;
             text-align: center;
             border: 1px solid var(--glass-border);
             transition: all 0.3s ease;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .day-card:hover {
@@ -1259,21 +1287,26 @@
         }
 
         .day-name {
-            font-size: 0.85em;
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .day-date {
+            font-size: 0.7em;
             color: var(--text-secondary);
             margin-bottom: 8px;
         }
 
-        .day-date {
-            font-size: 0.75em;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-        }
-
         .day-count {
-            font-size: 1.8em;
+            font-size: 1.6em;
             font-weight: 800;
             color: var(--primary);
+            line-height: 1;
         }
 
         .day-card.full-day {
@@ -2033,40 +2066,56 @@
             }
         }
 
-        /* Responsive Design */
+        /* Responsive Design - Enhanced for Mobile */
         @media (max-width: 768px) {
             .logo {
-                font-size: 2.5em;
+                font-size: 2.2em;
+                margin-bottom: 8px;
+            }
+
+            .tagline {
+                font-size: 0.85em;
             }
 
             .tab-btn {
-                padding: 12px 20px;
-                font-size: 0.9em;
+                padding: 10px 14px;
+                font-size: 0.85em;
+                min-width: auto;
             }
 
             .prayer-times-grid {
                 grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .prayer-card {
+                padding: 15px;
             }
 
             .tracker-stats {
                 grid-template-columns: 1fr;
+                gap: 12px;
             }
 
+            /* Week grid - optimized for mobile */
             .week-grid {
                 grid-template-columns: repeat(7, 1fr);
-                gap: 5px;
+                gap: 4px;
             }
 
             .day-card {
-                padding: 10px 5px;
+                padding: 8px 4px;
+                min-height: 70px;
             }
 
             .day-name {
-                font-size: 0.7em;
+                font-size: 0.65em;
+                margin-bottom: 3px;
             }
 
             .day-date {
-                font-size: 0.65em;
+                font-size: 0.6em;
+                margin-bottom: 5px;
             }
 
             .day-count {
@@ -2074,44 +2123,143 @@
             }
 
             .surah-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
                 max-height: 400px;
+                gap: 8px;
             }
 
             .modal-content {
-                padding: 25px;
+                padding: 20px;
                 width: 95%;
+                max-width: 95%;
             }
 
             .ayah {
-                font-size: 1.4em;
+                font-size: 1.3em;
             }
 
             .compass {
-                width: 250px;
-                height: 250px;
+                width: 220px;
+                height: 220px;
             }
 
             .tasbih-counter {
-                width: 200px;
-                height: 200px;
+                width: 180px;
+                height: 180px;
             }
 
             .tasbih-count {
-                font-size: 4em;
+                font-size: 3.5em;
             }
 
             .hijri-date {
-                font-size: 0.85em;
-                padding: 8px 18px;
+                font-size: 0.8em;
+                padding: 6px 15px;
             }
 
             .taqwa-meter {
                 margin-bottom: 20px;
+                padding: 15px;
             }
 
             .taqwa-score {
                 font-size: 1.2em;
+            }
+
+            /* Better touch targets */
+            .tracker-checkbox .checkmark {
+                width: 42px;
+                height: 42px;
+            }
+
+            .dhikr-count-btn {
+                padding: 16px;
+                font-size: 1.1em;
+                min-height: 48px;
+            }
+
+            .khatmah-surah-card {
+                padding: 12px 8px;
+            }
+
+            /* Reduce glass blur for performance */
+            .glass-card {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+
+            /* Optimize containers */
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                margin-bottom: 20px;
+                padding: 15px 10px;
+            }
+
+            /* Better grid layouts */
+            .names-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
+            }
+
+            .name-card {
+                padding: 12px 8px;
+            }
+
+            .name-arabic {
+                font-size: 1.2em;
+            }
+
+            /* Achievements */
+            .achievements-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            /* Stats */
+            .stat-mega-card {
+                padding: 20px;
+            }
+
+            .stat-mega-value {
+                font-size: 2.8em;
+            }
+
+            /* Buttons */
+            .btn-get-location {
+                padding: 8px 16px;
+                font-size: 0.85em;
+            }
+
+            /* Modal improvements */
+            .modal {
+                padding: 10px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 480px) {
+            .week-grid {
+                gap: 3px;
+            }
+
+            .day-card {
+                padding: 6px 2px;
+                min-height: 65px;
+            }
+
+            .day-name {
+                font-size: 0.6em;
+            }
+
+            .day-count {
+                font-size: 1.2em;
+            }
+
+            .glass-card {
+                padding: 15px 10px;
             }
         }
 
@@ -4471,7 +4619,6 @@
             // Save NOW
             localStorage.setItem('prayerTracker', JSON.stringify(trackerData));
             console.log('💾 SAVED:', prayer, '=', checked);
-            console.log('📦 Full data:', trackerData);
             
             // Update UI
             const card = document.querySelector(`.tracker-prayer-card[data-prayer="${prayer}"]`);
@@ -4484,10 +4631,15 @@
                 }
             }
             
+            // Update stats (debounced for performance)
             updateTrackerStats();
-            if (typeof updateTaqwaMeter === 'function') updateTaqwaMeter();
-            if (typeof updateAchievements === 'function') updateAchievements();
-            if (typeof updateStatistics === 'function') updateStatistics();
+            
+            // Delay heavy updates
+            setTimeout(() => {
+                if (typeof updateTaqwaMeter === 'function') updateTaqwaMeter();
+                if (typeof updateAchievements === 'function') updateAchievements();
+                if (typeof updateStatistics === 'function') updateStatistics();
+            }, 100);
         }
 
         function loadTrackerData() {
@@ -5193,8 +5345,8 @@
             document.getElementById('best-day').textContent = dayNames[bestDayIndex] || '-';
         }
 
-        // Save every 1 second for maximum safety
-        setInterval(autoSaveAll, 1000);
+        // Save every 2 seconds (optimized for performance)
+        setInterval(autoSaveAll, 2000);
 
         // Also save on visibility change (when switching apps/tabs)
         document.addEventListener('visibilitychange', () => {
