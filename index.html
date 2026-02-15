@@ -1832,6 +1832,151 @@
             pointer-events: none;
         }
 
+        /* Settings Styles */
+        .settings-section {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+        }
+
+        .settings-header {
+            font-family: 'Amiri', serif;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            gap: 20px;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-label {
+            font-size: 1.05em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .setting-desc {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255,255,255,0.2);
+            transition: 0.3s;
+            border-radius: 30px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Settings Select */
+        .settings-select {
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95em;
+            cursor: pointer;
+            min-width: 180px;
+        }
+
+        .settings-select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Time Input */
+        .time-input {
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95em;
+            min-width: 120px;
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .reset-warning {
+            text-align: center;
+            color: #f87171;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
         /* Statistics Styles */
         .overall-stats {
             display: grid;
@@ -2796,6 +2941,7 @@
             <button class="tab-btn" data-tab="adhkar"><span>💎 أذكار</span></button>
             <button class="tab-btn" data-tab="qibla"><span>🧭 قبلة</span></button>
             <button class="tab-btn" data-tab="tasbih"><span>📿 تسبيح</span></button>
+            <button class="tab-btn" data-tab="settings"><span>⚙️ إعدادات</span></button>
         </nav>
 
         <!-- Prayer Times Tab -->
@@ -3104,6 +3250,107 @@
                         <button class="preset-btn" onclick="setTasbihText('لا إله إلا الله')">لا إله إلا الله</button>
                         <button class="preset-btn" onclick="setTasbihText('استغفر الله')">استغفر الله</button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div class="tab-content" id="settings">
+            <div class="glass-card">
+                <h2 style="text-align: center; margin-bottom: 30px; font-family: 'Amiri', serif; font-size: 2em;">⚙️ الإعدادات</h2>
+                
+                <!-- Prayer Notifications -->
+                <div class="settings-section">
+                    <h3 class="settings-header">🔔 إشعارات الصلاة</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">تفعيل إشعارات الصلاة</div>
+                            <div class="setting-desc">تنبيهات صوتية عند دخول وقت الصلاة</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="prayer-notifications" onchange="togglePrayerNotifications(this.checked)" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item" id="adhan-selector">
+                        <div class="setting-info">
+                            <div class="setting-label">اختيار المؤذن</div>
+                            <div class="setting-desc">اختر صوت الأذان المفضل</div>
+                        </div>
+                        <select id="adhan-sound" class="settings-select" onchange="saveAdhanChoice(this.value)">
+                            <option value="default">نغمة افتراضية</option>
+                            <option value="makkah">أذان الحرم المكي</option>
+                            <option value="madinah">أذان الحرم المدني</option>
+                            <option value="egypt">أذان مصري</option>
+                            <option value="simple">نغمة بسيطة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Adhkar Notifications -->
+                <div class="settings-section">
+                    <h3 class="settings-header">💎 إشعارات الأذكار</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">أذكار الصباح</div>
+                            <div class="setting-desc">تنبيه يومي لأذكار الصباح</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="morning-adhkar" onchange="toggleMorningAdhkar(this.checked)" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item" id="morning-time-selector">
+                        <div class="setting-info">
+                            <div class="setting-label">وقت أذكار الصباح</div>
+                        </div>
+                        <input type="time" id="morning-time" class="time-input" value="07:00" onchange="saveMorningTime(this.value)">
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">أذكار المساء</div>
+                            <div class="setting-desc">تنبيه يومي لأذكار المساء</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="evening-adhkar" onchange="toggleEveningAdhkar(this.checked)" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item" id="evening-time-selector">
+                        <div class="setting-info">
+                            <div class="setting-label">وقت أذكار المساء</div>
+                        </div>
+                        <input type="time" id="evening-time" class="time-input" value="17:00" onchange="saveEveningTime(this.value)">
+                    </div>
+                </div>
+
+                <!-- Prayer Tracker Settings -->
+                <div class="settings-section">
+                    <h3 class="settings-header">📊 متابعة الصلوات</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-label">قفل الصلوات حسب الوقت</div>
+                            <div class="setting-desc">امنع التحديد إلا في وقت الصلاة المناسب</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="lock-prayers" onchange="togglePrayerLock(this.checked)" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Reset Data -->
+                <div class="settings-section">
+                    <h3 class="settings-header">🔄 إعادة تعيين</h3>
+                    <button class="reset-btn" onclick="resetAllData()">🗑️ حذف جميع البيانات</button>
+                    <p class="reset-warning">⚠️ سيتم حذف جميع بياناتك المحفوظة</p>
                 </div>
             </div>
         </div>
@@ -4587,6 +4834,21 @@
                 const checkbox = document.getElementById(`check-${prayer}`);
                 if (checkbox) {
                     checkbox.addEventListener('change', function(e) {
+                        // Check if prayer can be checked based on time lock
+                        const prayerMap = {
+                            'fajr': 'Fajr',
+                            'dhuhr': 'Dhuhr',
+                            'asr': 'Asr',
+                            'maghrib': 'Maghrib',
+                            'isha': 'Isha'
+                        };
+
+                        if (this.checked && !canCheckPrayer(prayerMap[prayer])) {
+                            this.checked = false;
+                            showNotification('⏰ لم يحن وقت هذه الصلاة بعد');
+                            return;
+                        }
+
                         console.log(`📝 ${prayer} changed to:`, this.checked);
                         savePrayerImmediately(prayer, this.checked);
                     });
@@ -4845,9 +5107,10 @@
             showDuaaCategory('daily');
             getHijriDate();
             loadTrackerData();
-            setupPrayerTrackerEvents(); // CRITICAL: Setup event listeners
+            setupPrayerTrackerEvents();
             loadKhatmahProgress();
-            loadTasbihData(); // Load tasbih saved data
+            loadTasbihData();
+            loadSettings(); // Load user settings
             restoreLastTab();
             updateAchievements();
             updateStatistics();
@@ -5072,6 +5335,173 @@
             setTimeout(() => {
                 saveBtn.classList.remove('saving');
             }, 500);
+        }
+
+        // ========================================
+        // SETTINGS FUNCTIONS
+        // ========================================
+
+        // Load settings on page load
+        function loadSettings() {
+            // Prayer notifications
+            const prayerNoti = localStorage.getItem('prayerNotifications') !== 'false';
+            document.getElementById('prayer-notifications').checked = prayerNoti;
+
+            // Adhkar notifications
+            const morningAdhkar = localStorage.getItem('morningAdhkar') !== 'false';
+            const eveningAdhkar = localStorage.getItem('eveningAdhkar') !== 'false';
+            document.getElementById('morning-adhkar').checked = morningAdhkar;
+            document.getElementById('evening-adhkar').checked = eveningAdhkar;
+
+            // Times
+            const morningTime = localStorage.getItem('morningTime') || '07:00';
+            const eveningTime = localStorage.getItem('eveningTime') || '17:00';
+            document.getElementById('morning-time').value = morningTime;
+            document.getElementById('evening-time').value = eveningTime;
+
+            // Adhan sound
+            const adhanSound = localStorage.getItem('adhanSound') || 'default';
+            document.getElementById('adhan-sound').value = adhanSound;
+
+            // Prayer lock
+            const prayerLock = localStorage.getItem('prayerLock') !== 'false';
+            document.getElementById('lock-prayers').checked = prayerLock;
+
+            // Schedule notifications
+            scheduleAdhkarNotifications();
+        }
+
+        // Prayer notifications toggle
+        function togglePrayerNotifications(enabled) {
+            localStorage.setItem('prayerNotifications', enabled);
+            showNotification(enabled ? '✅ تم تفعيل إشعارات الصلاة' : '❌ تم إيقاف إشعارات الصلاة');
+        }
+
+        // Adhkar toggles
+        function toggleMorningAdhkar(enabled) {
+            localStorage.setItem('morningAdhkar', enabled);
+            if (enabled) {
+                scheduleAdhkarNotifications();
+                showNotification('✅ تم تفعيل أذكار الصباح');
+            } else {
+                showNotification('❌ تم إيقاف أذكار الصباح');
+            }
+        }
+
+        function toggleEveningAdhkar(enabled) {
+            localStorage.setItem('eveningAdhkar', enabled);
+            if (enabled) {
+                scheduleAdhkarNotifications();
+                showNotification('✅ تم تفعيل أذكار المساء');
+            } else {
+                showNotification('❌ تم إيقاف أذكار المساء');
+            }
+        }
+
+        // Save times
+        function saveMorningTime(time) {
+            localStorage.setItem('morningTime', time);
+            scheduleAdhkarNotifications();
+            showNotification('✅ تم حفظ وقت أذكار الصباح');
+        }
+
+        function saveEveningTime(time) {
+            localStorage.setItem('eveningTime', time);
+            scheduleAdhkarNotifications();
+            showNotification('✅ تم حفظ وقت أذكار المساء');
+        }
+
+        // Save adhan choice
+        function saveAdhanChoice(sound) {
+            localStorage.setItem('adhanSound', sound);
+            showNotification('✅ تم حفظ اختيار المؤذن');
+        }
+
+        // Prayer lock toggle
+        function togglePrayerLock(enabled) {
+            localStorage.setItem('prayerLock', enabled);
+            showNotification(enabled ? '🔒 تم تفعيل قفل الصلوات' : '🔓 تم إلغاء قفل الصلوات');
+        }
+
+        // Schedule Adhkar Notifications
+        function scheduleAdhkarNotifications() {
+            const morningEnabled = localStorage.getItem('morningAdhkar') !== 'false';
+            const eveningEnabled = localStorage.getItem('eveningAdhkar') !== 'false';
+            const morningTime = localStorage.getItem('morningTime') || '07:00';
+            const eveningTime = localStorage.getItem('eveningTime') || '17:00';
+
+            // Check every minute
+            setInterval(() => {
+                const now = new Date();
+                const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+                if (morningEnabled && currentTime === morningTime) {
+                    sendAdhkarNotification('صباح', '🌅 حان وقت أذكار الصباح');
+                }
+
+                if (eveningEnabled && currentTime === eveningTime) {
+                    sendAdhkarNotification('مساء', '🌆 حان وقت أذكار المساء');
+                }
+            }, 60000); // Check every minute
+        }
+
+        // Send Adhkar Notification
+        function sendAdhkarNotification(type, message) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('كريم - أذكار', {
+                    body: message,
+                    icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕌</text></svg>',
+                    badge: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>'
+                });
+
+                if (navigator.vibrate) {
+                    navigator.vibrate([200, 100, 200]);
+                }
+            }
+            showNotification(message);
+        }
+
+        // Reset all data
+        function resetAllData() {
+            if (confirm('⚠️ هل أنت متأكد من حذف جميع البيانات؟\n\nسيتم حذف:\n• متابعة الصلوات\n• ختمة القرآن\n• أسماء الله المحفوظة\n• المسبحة\n• الإنجازات\n\nلا يمكن التراجع عن هذا الإجراء!')) {
+                localStorage.clear();
+                showNotification('🗑️ تم حذف جميع البيانات');
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            }
+        }
+
+        // Check if prayer can be checked based on time
+        function canCheckPrayer(prayer) {
+            const prayerLock = localStorage.getItem('prayerLock') !== 'false';
+            if (!prayerLock) return true; // If lock is disabled, allow all
+
+            const prayerTimes = JSON.parse(localStorage.getItem('prayerTimes') || '{}');
+            if (!prayerTimes[prayer]) return true; // If no times, allow
+
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTimeInMinutes = currentHour * 60 + currentMinute;
+
+            // Get prayer time
+            const [prayerHour, prayerMinute] = prayerTimes[prayer].split(':').map(Number);
+            const prayerTimeInMinutes = prayerHour * 60 + prayerMinute;
+
+            // Get next prayer time (for window)
+            const prayerOrder = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+            const prayerIndex = prayerOrder.indexOf(prayer);
+            const nextPrayer = prayerOrder[prayerIndex + 1];
+            let nextPrayerTimeInMinutes = 24 * 60; // End of day
+
+            if (nextPrayer && prayerTimes[nextPrayer]) {
+                const [nextHour, nextMinute] = prayerTimes[nextPrayer].split(':').map(Number);
+                nextPrayerTimeInMinutes = nextHour * 60 + nextMinute;
+            }
+
+            // Allow if current time is within prayer window
+            return currentTimeInMinutes >= prayerTimeInMinutes && currentTimeInMinutes < nextPrayerTimeInMinutes;
         }
 
         // Auto-save function that runs continuously
