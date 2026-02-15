@@ -3029,20 +3029,26 @@
                 const { latitude, longitude } = position.coords;
                 
                 // Get city and country name from coordinates
+                let locationName = 'موقعك الحالي';
                 try {
-                    const geoResponse = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=ar`);
-                    const geoData = await geoResponse.json();
+                    const geoResponse = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=ar`, {
+                        headers: {
+                            'User-Agent': 'Kareem Islamic App'
+                        }
+                    });
                     
-                    const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || '';
-                    const country = geoData.address.country || '';
-                    const locationName = `${city}, ${country}`;
-                    
-                    locationText.innerHTML = `📍 ${locationName}`;
-                    localStorage.setItem('locationName', locationName);
+                    if (geoResponse.ok) {
+                        const geoData = await geoResponse.json();
+                        const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.state || '';
+                        const country = geoData.address.country || '';
+                        locationName = city && country ? `${city}, ${country}` : 'موقعك الحالي';
+                    }
                 } catch (error) {
-                    console.error('Error getting location name:', error);
-                    locationText.innerHTML = `📍 موقعك الحالي`;
+                    console.log('Could not get location name, using coordinates');
                 }
+                
+                locationText.innerHTML = `📍 ${locationName}`;
+                localStorage.setItem('locationName', locationName);
 
                 // Calculate prayer times using Aladhan API
                 const date = new Date();
@@ -4729,11 +4735,19 @@
             console.log('Names:', localStorage.getItem('memorizedNames'));
             console.log('==================');
             
-            // Register Service Worker for PWA
+            // Register Service Worker for PWA (optional - doesn't block functionality)
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgKGUpID0+IHsKICBjb25zb2xlLmxvZygnU2VydmljZSBXb3JrZXIgaW5zdGFsbGVkJyk7CiAgc2VsZi5za2lwV2FpdGluZygpOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCAoZSkgPT4gewogIGNvbnNvbGUubG9nKCdTZXJ2aWNlIFdvcmtlciBhY3RpdmF0ZWQnKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgKGUpID0+IHsKICBlLnJlc3BvbmRXaXRoKAogICAgZmV0Y2goZS5yZXF1ZXN0KS5jYXRjaCgoKSA9PiB7CiAgICAgIHJldHVybiBuZXcgUmVzcG9uc2UoJ09mZmxpbmUnLCB7IHN0YXR1czogNTAzIH0pOwogICAgfSkKICApOwp9KTs=')
-                    .then(() => console.log('Service Worker registered'))
-                    .catch(err => console.log('Service Worker registration failed:', err));
+                // Don't block page load with service worker registration
+                setTimeout(() => {
+                    try {
+                        navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgKGUpID0+IHsKICBjb25zb2xlLmxvZygnU2VydmljZSBXb3JrZXIgaW5zdGFsbGVkJyk7CiAgc2VsZi5za2lwV2FpdGluZygpOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCAoZSkgPT4gewogIGNvbnNvbGUubG9nKCdTZXJ2aWNlIFdvcmtlciBhY3RpdmF0ZWQnKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgKGUpID0+IHsKICBlLnJlc3BvbmRXaXRoKAogICAgZmV0Y2goZS5yZXF1ZXN0KS5jYXRjaCgoKSA9PiB7CiAgICAgIHJldHVybiBuZXcgUmVzcG9uc2UoJ09mZmxpbmUnLCB7IHN0YXR1czogNTAzIH0pOwogICAgfSkKICApOwp9KTs=')
+                            .then(() => console.log('✅ Service Worker ready'))
+                            .catch(() => console.log('ℹ️ Service Worker not available (normal for data: URLs)'));
+                    } catch (e) {
+                        // Service worker not critical, just log
+                        console.log('ℹ️ Service Worker not supported');
+                    }
+                }, 2000);
             }
             
             // Show install prompt for PWA
