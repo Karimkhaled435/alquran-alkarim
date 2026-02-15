@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#667eea">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="كريم">
@@ -3647,14 +3648,31 @@
         };
 
         function showAdhkar(category) {
-            // Update active button
+            // Update active button - FIXED
             document.querySelectorAll('.adhkar-category-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            
+            // Find and activate the button for this category
+            const buttons = document.querySelectorAll('.adhkar-category-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${category}'`)) {
+                    btn.classList.add('active');
+                }
+            });
             
             const container = document.getElementById('adhkar-content');
+            if (!container) {
+                console.error('Adhkar container not found');
+                return;
+            }
+            
             container.innerHTML = '';
             
             const adhkarList = adhkarData[category];
+            if (!adhkarList) {
+                console.error('No adhkar data for category:', category);
+                return;
+            }
+            
             adhkarList.forEach((dhikr, index) => {
                 const card = document.createElement('div');
                 card.className = 'dhikr-card';
@@ -4123,14 +4141,31 @@
         };
 
         function showDuaaCategory(category) {
-            // Update active button
+            // Update active button - FIXED
             document.querySelectorAll('.duaa-category-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            
+            // Find and activate the button for this category
+            const buttons = document.querySelectorAll('.duaa-category-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${category}'`)) {
+                    btn.classList.add('active');
+                }
+            });
             
             const container = document.getElementById('duaa-content');
+            if (!container) {
+                console.error('Duaa container not found');
+                return;
+            }
+            
             container.innerHTML = '';
             
             const duaas = duaaData[category];
+            if (!duaas) {
+                console.error('No duaa data for category:', category);
+                return;
+            }
+            
             duaas.forEach(duaa => {
                 const card = document.createElement('div');
                 card.className = 'duaa-card';
