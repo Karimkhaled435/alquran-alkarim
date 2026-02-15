@@ -248,10 +248,10 @@
 
         .theme-toggle {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 60px;
-            height: 60px;
+            top: 15px;
+            left: 15px;
+            width: 45px;
+            height: 45px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border-radius: 50%;
@@ -272,7 +272,7 @@
         }
 
         .theme-icon {
-            font-size: 1.8em;
+            font-size: 1.4em;
             transition: transform 0.4s ease;
         }
 
@@ -282,10 +282,10 @@
 
         .manual-save-btn {
             position: fixed;
-            top: 90px;
-            left: 20px;
-            width: 60px;
-            height: 60px;
+            top: 70px;
+            left: 15px;
+            width: 45px;
+            height: 45px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border-radius: 50%;
@@ -297,7 +297,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1000;
             box-shadow: var(--shadow);
-            font-size: 1.8em;
+            font-size: 1.4em;
         }
 
         .manual-save-btn:hover {
@@ -317,6 +317,24 @@
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.2); }
+        }
+
+        /* Hide buttons on very small screens to avoid clutter */
+        @media (max-width: 480px) {
+            .theme-toggle,
+            .manual-save-btn {
+                width: 40px;
+                height: 40px;
+                opacity: 0.8;
+            }
+            
+            .theme-icon {
+                font-size: 1.2em;
+            }
+            
+            .manual-save-btn {
+                font-size: 1.2em;
+            }
         }
 
         /* Glass Card */
@@ -1915,6 +1933,11 @@
 
         .achievement-count {
             text-align: center;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 5px;
+            flex-direction: row-reverse;
         }
 
         .big-number {
@@ -2954,8 +2977,8 @@
                 
                 <div class="achievements-summary">
                     <div class="achievement-count">
+                        <span class="small-text">إنجاز 20 / </span>
                         <span class="big-number" id="unlocked-count">0</span>
-                        <span class="small-text">/ 20 إنجاز</span>
                     </div>
                     <div class="achievement-progress-ring" id="achievement-ring">
                         <svg width="120" height="120">
